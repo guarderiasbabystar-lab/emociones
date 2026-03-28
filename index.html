@@ -9,23 +9,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
-
-        body {
-            font-family: 'Nunito', sans-serif;
-            background-color: #fdf8f5;
+        
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background-color: #fdf8f5; /* Fondo pastel cálido */
+        }
+        
+        .fade-in { 
+            animation: fadeIn 0.4s ease-out forwards; 
+        }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
         }
 
-        .fade-in {
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* Estilos personalizados para el menú activo */
         .nav-item.active {
-            background-color: #fef08a;
+            background-color: #fef08a; /* Amarillo pastel */
             color: #854d0e;
             font-weight: 700;
             border-left: 4px solid #eab308;
@@ -47,19 +48,57 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+
+        @media (max-width: 639px) {
+            #course-view {
+                min-height: 100vh;
+                min-height: 100dvh;
+            }
+
+            #login-view {
+                padding: 1rem;
+            }
+
+            #login-view > div {
+                width: 100%;
+                max-width: 28rem;
+                padding: 1.5rem;
+            }
+
+            #navMenu {
+                max-height: calc(100vh - 88px);
+                max-height: calc(100dvh - 88px);
+            }
+
+            #navMenu.mobile-open {
+                display: block;
+            }
+
+            #mod-evaluacion .mt-8.flex.justify-between.items-center.border-t.border-gray-200.pt-6,
+            .course-bottom-nav {
+                position: sticky;
+                bottom: 0;
+                background: #fdf8f5;
+                padding-top: 1rem;
+                padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+                z-index: 5;
+            }
+        }
+
     </style>
 </head>
-<body class="text-gray-800 antialiased min-h-screen flex flex-col overflow-x-hidden">
+<body class="text-gray-800 antialiased h-screen flex flex-col overflow-hidden">
 
-    <!-- ================= PANTALLA DE LOGIN ================= -->
+    <!-- ================= PANTALLA DE LOGIN (CONEXIÓN A SHEET) ================= -->
     <div id="login-view" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-orange-100 to-yellow-50 fade-in">
-        <div class="bg-white p-8 md:p-10 rounded-3xl shadow-xl w-11/12 max-w-md text-center border border-orange-100">
+        <div class="bg-white p-6 sm:p-8 md:p-10 rounded-3xl shadow-xl w-full max-w-md text-center border border-orange-100">
             <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <i class="fa-solid fa-star text-4xl text-yellow-500"></i>
             </div>
             <h1 class="text-3xl font-bold text-orange-800 mb-2">BabyStar</h1>
             <p class="text-gray-500 mb-8 font-semibold">Portal de Capacitación</p>
-
+            
             <h2 class="text-xl font-bold text-gray-700 mb-6">Curso: Gestión Emocional</h2>
 
             <form id="loginForm" onsubmit="iniciarSesion(event)" class="space-y-5">
@@ -69,34 +108,22 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fa-solid fa-user text-gray-400"></i>
                         </div>
-                        <input
-                            type="text"
-                            id="userNameInput"
-                            required
-                            autoCapitalize="none"
-                            autoCorrect="off"
-                            spellCheck="false"
-                            placeholder="Ingresa tu usuario"
-                            class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 outline-none transition-all">
+                        <input type="text" id="userNameInput" required placeholder="Ingresa tu usuario" 
+                            class="w-full pl-10 pr-4 py-3.5 text-base border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 outline-none transition-all">
                     </div>
                 </div>
-
                 <div>
                     <label for="passwordInput" class="block text-left text-sm font-semibold text-gray-600 mb-1">Contraseña</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fa-solid fa-lock text-gray-400"></i>
                         </div>
-                        <input
-                            type="password"
-                            id="passwordInput"
-                            required
-                            placeholder="Ingresa tu contraseña"
-                            class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 outline-none transition-all">
+                        <input type="password" id="passwordInput" required placeholder="Ingresa tu contraseña" 
+                            class="w-full pl-10 pr-4 py-3.5 text-base border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 outline-none transition-all">
                     </div>
                 </div>
-
-                <button type="submit" id="loginBtn" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-xl transition-colors shadow-md flex items-center justify-center">
+                
+                <button type="submit" id="loginBtn" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 px-4 rounded-xl transition-colors shadow-md flex items-center justify-center text-base">
                     Entrar al Curso
                 </button>
                 <p id="loginError" class="text-red-500 text-sm hidden mt-2">Usuario o contraseña incorrectos. Intenta de nuevo.</p>
@@ -105,9 +132,10 @@
     </div>
 
     <!-- ================= PANTALLA PRINCIPAL DEL CURSO ================= -->
-    <div id="course-view" class="hidden min-h-screen flex flex-col sm:flex-row w-full fade-in">
-
-        <aside class="w-full sm:w-64 lg:w-72 bg-white border-r border-gray-200 h-auto sm:h-full flex flex-col shadow-sm z-10 flex-shrink-0">
+    <div id="course-view" class="hidden h-full min-h-0 flex flex-col sm:flex-row w-full fade-in">
+        
+        <!-- Sidebar / Menú de Navegación -->
+        <aside class="relative w-full sm:w-64 lg:w-72 bg-white border-b sm:border-b-0 sm:border-r border-gray-200 h-auto sm:h-full flex flex-col shadow-sm z-20 flex-shrink-0">
             <div class="p-6 border-b border-gray-100 bg-orange-50 flex items-center justify-between sm:block">
                 <div>
                     <h2 class="text-2xl font-extrabold text-orange-600 flex items-center gap-2">
@@ -115,26 +143,27 @@
                     </h2>
                     <p class="text-xs text-gray-500 mt-1 font-semibold uppercase tracking-wider hidden sm:block">Capacitación Continua</p>
                 </div>
+                <!-- Botón móvil -->
                 <button id="mobileMenuBtn" class="sm:hidden text-gray-600 text-2xl focus:outline-none">
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
-
-            <nav id="navMenu" class="flex-1 overflow-y-auto py-4 hidden sm:block">
+            
+            <nav id="navMenu" class="hidden sm:block w-full sm:flex-1 overflow-y-auto py-2 sm:py-4 absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg sm:static sm:border-b-0 sm:shadow-none">
                 <p class="px-6 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Contenido del Manual</p>
-
+                
                 <button onclick="cambiarModulo('intro')" class="nav-item active w-full text-left px-6 py-3 text-gray-600 hover:bg-orange-50 transition-colors flex items-center gap-3">
                     <i class="fa-solid fa-door-open w-5 text-center"></i> Introducción
                 </button>
-
+                
                 <button onclick="cambiarModulo('fundamentos')" class="nav-item w-full text-left px-6 py-3 text-gray-600 hover:bg-orange-50 transition-colors flex items-center gap-3">
                     <i class="fa-solid fa-brain w-5 text-center"></i> 1. El Cerebro Infantil
                 </button>
-
+                
                 <button onclick="cambiarModulo('etapas')" class="nav-item w-full text-left px-6 py-3 text-gray-600 hover:bg-orange-50 transition-colors flex items-center gap-3">
                     <i class="fa-solid fa-seedling w-5 text-center"></i> 2. Etapas de Desarrollo
                 </button>
-
+                
                 <button onclick="cambiarModulo('biblioteca')" class="nav-item w-full text-left px-6 py-3 text-gray-600 hover:bg-orange-50 transition-colors flex items-center gap-3">
                     <i class="fa-solid fa-book w-5 text-center"></i> 3. Obras Fundamentales
                 </button>
@@ -162,6 +191,11 @@
                 <button onclick="cambiarModulo('evaluacion')" id="nav-evaluacion" class="nav-item w-full text-left px-6 py-3 text-gray-600 hover:bg-orange-50 transition-colors flex items-center gap-3">
                     <i class="fa-solid fa-graduation-cap w-5 text-center"></i> 9. Evaluación Final
                 </button>
+                <div class="px-4 pt-2 pb-4 sm:hidden">
+                    <button onclick="cerrarSesion()" class="w-full text-center py-3 text-sm text-red-500 hover:bg-red-50 rounded-lg transition-colors font-semibold border border-red-100">
+                        <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Cerrar Sesión
+                    </button>
+                </div>
             </nav>
 
             <div class="p-4 border-t border-gray-100 hidden sm:block">
@@ -171,16 +205,19 @@
             </div>
         </aside>
 
-        <main class="flex-1 overflow-y-auto bg-[#fdf8f5] p-4 sm:p-8 relative">
-            <div class="max-w-4xl mx-auto pb-20">
-
+        <!-- Área de Contenido -->
+        <main class="flex-1 min-h-0 h-full overflow-y-auto bg-[#fdf8f5] p-4 sm:p-6 lg:p-10 relative">
+            
+            <div class="max-w-4xl mx-auto pb-28 sm:pb-20">
+                
+                <!-- MÓDULO: INTRODUCCIÓN -->
                 <section id="mod-intro" class="content-section fade-in">
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 mb-8 relative overflow-hidden">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-100 rounded-bl-full -z-0 opacity-50"></div>
                         <span class="bg-orange-100 text-orange-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-4 inline-block relative z-10">Inicio</span>
                         <h1 class="text-4xl font-extrabold text-gray-800 mb-4 relative z-10">Introducción al Manual Completo</h1>
                         <p class="text-xl text-gray-600 mb-6 relative z-10">Bienvenidos al programa integral de <strong>Gestión Emocional de BabyStar</strong>.</p>
-
+                        
                         <div class="prose prose-lg text-gray-600 space-y-4 relative z-10">
                             <p>
                                 La primera infancia, específicamente los primeros 1,000 días de vida, representa la ventana de plasticidad cerebral más crítica e importante en la vida de un ser humano. En BabyStar, comprendemos que nuestra labor va mucho más allá de los cuidados físicos; somos <strong>arquitectas del cerebro infantil</strong>.
@@ -212,14 +249,16 @@
                     </div>
                 </section>
 
+                <!-- MÓDULO 1: FUNDAMENTOS -->
                 <section id="mod-fundamentos" class="content-section hidden fade-in">
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
                         <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-4 inline-block">Módulo 1</span>
                         <h1 class="text-4xl font-extrabold text-gray-800 mb-6">La Neurobiología de las Emociones</h1>
-
+                        
                         <p class="text-lg text-gray-600 mb-8">Para gestionar el comportamiento de un niño, primero debemos entender cómo funciona su cerebro. Los niños de guardería no tienen la estructura cerebral para manipular; sus reacciones son puramente biológicas.</p>
-
+                        
                         <div class="space-y-8">
+                            <!-- El Cerebro Triuno -->
                             <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
                                 <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                                     <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-brain"></i></div>
@@ -231,7 +270,8 @@
                                     <p><strong>3. El Córtex Prefrontal (Razón):</strong> Es la parte responsable de la lógica, el control de impulsos, la empatía y la planificación. <strong>¡Esta parte del cerebro termina de desarrollarse hasta los 25 años!</strong> Pedirle a un niño de 2 años que "controle su enojo" es biológicamente imposible por sí solo.</p>
                                 </div>
                             </div>
-
+                            
+                            <!-- Secuestro Amigdalar -->
                             <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
                                 <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                                     <div class="w-10 h-10 bg-red-100 text-red-600 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-bolt"></i></div>
@@ -240,6 +280,7 @@
                                 <p class="text-gray-700 mb-4">Cuando un niño experimenta frustración extrema (porque le quitaron un juguete o no le dimos lo que quería), su Amígdala detecta una "amenaza" y <strong>apaga temporalmente el Córtex Prefrontal</strong>. El niño queda bajo el control de sus instintos. Por eso, durante un desborde, los sermones, los gritos o las explicaciones lógicas no funcionan: su cerebro "racional" está apagado.</p>
                             </div>
 
+                            <!-- Neuronas Espejo y Co-regulación -->
                             <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
                                 <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                                     <div class="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-people-arrows"></i></div>
@@ -248,6 +289,7 @@
                                 <p class="text-gray-700">Las neuronas espejo del niño absorben el estado emocional del adulto frente a él. Si el niño está desregulado y nosotros respondemos con ansiedad, gritos o tensión, el niño escalará su crisis. <strong>La Co-regulación</strong> es el proceso donde el educador utiliza su propio sistema nervioso calmado (tono de voz bajo, respiración pausada, postura relajada) para "contagiar" esa calma biológica al niño hasta que su propio cerebro recupere el control.</p>
                             </div>
 
+                            <!-- El Educador como Modelo -->
                             <div class="bg-orange-50 p-6 rounded-2xl border border-orange-200">
                                 <h3 class="text-2xl font-bold text-orange-800 mb-4 flex items-center gap-3">
                                     <div class="w-10 h-10 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-person-chalkboard"></i></div>
@@ -257,6 +299,7 @@
                                 <p class="text-gray-700">La coherencia entre nuestro discurso y nuestra acción es lo que genera verdadera seguridad y confianza en el aula. Verbalizar nuestros propios procesos es una herramienta poderosa: <em>"Uy, se me cayó la pintura. Estoy un poco frustrada, voy a respirar hondo para limpiarlo"</em>.</p>
                             </div>
 
+                            <!-- El Camino hacia la Autorregulación -->
                             <div class="bg-indigo-50 p-6 rounded-2xl border border-indigo-200">
                                 <h3 class="text-2xl font-bold text-indigo-800 mb-4 flex items-center gap-3">
                                     <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-route"></i></div>
@@ -269,13 +312,15 @@
                     </div>
                 </section>
 
+                <!-- MÓDULO 2: ETAPAS -->
                 <section id="mod-etapas" class="content-section hidden fade-in">
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
                         <span class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-4 inline-block">Módulo 2</span>
                         <h1 class="text-4xl font-extrabold text-gray-800 mb-6">Desarrollo Emocional por Etapas</h1>
                         <p class="text-lg text-gray-600 mb-8">Nuestras expectativas sobre el comportamiento de los niños deben alinearse con su etapa de desarrollo biológico y psicológico real.</p>
-
+                        
                         <div class="space-y-8">
+                            <!-- 0-6 meses -->
                             <div class="flex flex-col md:flex-row gap-6 items-start border-b border-gray-100 pb-8">
                                 <div class="bg-purple-50 text-purple-600 font-extrabold text-3xl px-6 py-4 rounded-2xl min-w-[140px] text-center shadow-sm">
                                     0-6<span class="text-sm block text-purple-400 mt-1">MESES</span>
@@ -283,7 +328,7 @@
                                 <div class="flex-1">
                                     <h3 class="text-2xl font-bold text-gray-800 mb-3">Regulación Fisiológica y Supervivencia</h3>
                                     <p class="text-gray-600 mb-4">En esta etapa, el llanto es el <strong>único mecanismo de comunicación</strong>. No lloran por "capricho" ni para manipular, lloran porque es una alerta biológica de supervivencia (hambre, sueño, frío, necesidad de contacto).</p>
-
+                                    
                                     <div class="bg-purple-50/50 p-5 rounded-xl border border-purple-100">
                                         <h4 class="font-bold text-purple-800 mb-3 flex items-center gap-2"><i class="fa-solid fa-hands-holding-child"></i> Profundizando en el Rol del Educador</h4>
                                         <ul class="space-y-3 text-sm text-gray-700">
@@ -295,7 +340,8 @@
                                     </div>
                                 </div>
                             </div>
-
+                            
+                            <!-- 6-12 meses -->
                             <div class="flex flex-col md:flex-row gap-6 items-start border-b border-gray-100 pb-8">
                                 <div class="bg-indigo-50 text-indigo-600 font-extrabold text-3xl px-6 py-4 rounded-2xl min-w-[140px] text-center shadow-sm">
                                     6-12<span class="text-sm block text-indigo-400 mt-1">MESES</span>
@@ -303,7 +349,7 @@
                                 <div class="flex-1">
                                     <h3 class="text-2xl font-bold text-gray-800 mb-3">La Angustia de Separación</h3>
                                     <p class="text-gray-600 mb-4">Aparece la "permanencia del objeto" y la diferenciación cognitiva. El bebé entiende que su figura de apego se aleja y surge el temor a los extraños. Es una etapa de alta sensibilidad.</p>
-
+                                    
                                     <div class="bg-indigo-50/50 p-5 rounded-xl border border-indigo-100">
                                         <h4 class="font-bold text-indigo-800 mb-3 flex items-center gap-2"><i class="fa-solid fa-people-pulling"></i> Profundizando en el Rol del Educador</h4>
                                         <ul class="space-y-3 text-sm text-gray-700">
@@ -316,6 +362,7 @@
                                 </div>
                             </div>
 
+                            <!-- 1-2 años -->
                             <div class="flex flex-col md:flex-row gap-6 items-start border-b border-gray-100 pb-8">
                                 <div class="bg-pink-50 text-pink-600 font-extrabold text-3xl px-6 py-4 rounded-2xl min-w-[140px] text-center shadow-sm">
                                     1-2<span class="text-sm block text-pink-400 mt-1">AÑOS</span>
@@ -323,7 +370,7 @@
                                 <div class="flex-1">
                                     <h3 class="text-2xl font-bold text-gray-800 mb-3">Explosión de Autonomía y Frustración</h3>
                                     <p class="text-gray-600 mb-4">Descubren su individualidad. Quieren hacerlo todo solos, pero sus habilidades motoras y de lenguaje aún son limitadas. Este choque genera una inmensa frustración. Aparecen las <strong>primeras rabietas intensas</strong>.</p>
-
+                                    
                                     <div class="bg-pink-50/50 p-5 rounded-xl border border-pink-100">
                                         <h4 class="font-bold text-pink-800 mb-3 flex items-center gap-2"><i class="fa-solid fa-child-reaching"></i> Profundizando en el Rol del Educador</h4>
                                         <ul class="space-y-3 text-sm text-gray-700">
@@ -336,6 +383,7 @@
                                 </div>
                             </div>
 
+                            <!-- 2-4 años -->
                             <div class="flex flex-col md:flex-row gap-6 items-start border-b border-gray-100 pb-8">
                                 <div class="bg-teal-50 text-teal-600 font-extrabold text-3xl px-6 py-4 rounded-2xl min-w-[140px] text-center shadow-sm">
                                     2-4<span class="text-sm block text-teal-400 mt-1">AÑOS</span>
@@ -343,7 +391,7 @@
                                 <div class="flex-1">
                                     <h3 class="text-2xl font-bold text-gray-800 mb-3">Egocentrismo y el Despertar Social</h3>
                                     <p class="text-gray-600 mb-4">Es la etapa del "Mío" y del "No". El egocentrismo es normativo; no saben compartir de manera genuina hasta cerca de los 4 años. Empiezan a identificar emociones propias y ajenas si se les guía.</p>
-
+                                    
                                     <div class="bg-teal-50/50 p-5 rounded-xl border border-teal-100">
                                         <h4 class="font-bold text-teal-800 mb-3 flex items-center gap-2"><i class="fa-solid fa-comments"></i> Profundizando en el Rol del Educador</h4>
                                         <ul class="space-y-3 text-sm text-gray-700">
@@ -356,6 +404,7 @@
                                 </div>
                             </div>
 
+                            <!-- Habilidades Sociales y Empatía -->
                             <div class="bg-indigo-50 p-6 rounded-2xl border border-indigo-200 mt-8">
                                 <h3 class="text-2xl font-bold text-indigo-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-people-carry-box"></i> Desarrollo de Habilidades Sociales y Empatía</h3>
                                 <p class="text-gray-700 mb-4">La empatía no es innata, se construye. Así evoluciona en la primera infancia y así debemos acompañarla:</p>
@@ -367,10 +416,11 @@
                                 </ul>
                             </div>
 
+                            <!-- MINI-RETO 1 -->
                             <div class="mt-10 bg-indigo-600 rounded-3xl p-6 text-white shadow-lg">
                                 <h3 class="text-2xl font-bold mb-2"><i class="fa-solid fa-puzzle-piece mr-2"></i> Mini-Reto de Conocimiento</h3>
                                 <p class="text-indigo-200 mb-6 text-sm">Comprueba lo aprendido en los primeros dos módulos.</p>
-
+                                
                                 <div class="bg-white rounded-2xl p-6 text-gray-800" id="quiz-1-container">
                                     <p class="font-bold mb-3">1. ¿Qué debemos hacer ante el llanto de un bebé de 0 a 6 meses?</p>
                                     <div class="space-y-2 mb-6 text-sm">
@@ -401,11 +451,12 @@
                     </div>
                 </section>
 
+                <!-- MÓDULO 3: OBRAS FUNDAMENTALES -->
                 <section id="mod-biblioteca" class="content-section hidden fade-in">
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
                         <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-4 inline-block">Módulo 3</span>
                         <h1 class="text-4xl font-extrabold text-gray-800 mb-6">Obras Fundamentales</h1>
-
+                        
                         <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-r-xl mb-8">
                             <p class="text-xl text-yellow-900 leading-relaxed m-0">
                                 <strong>Primicia del programa:</strong> Nuestro manual de gestión emocional se apoya en <strong>dos obras fundamentales</strong> que servirán como pilares de nuestro programa. A través de ellas, unificaremos el lenguaje emocional en todas las aulas de la guardería.
@@ -413,6 +464,7 @@
                         </div>
 
                         <div class="space-y-10">
+                            <!-- El Monstruo de Colores -->
                             <div class="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm flex flex-col md:flex-row">
                                 <div class="md:w-1/3 bg-gray-50 flex items-center justify-center p-6 border-r border-gray-200">
                                     <div class="w-full aspect-[3/4] bg-white border border-gray-200 rounded-xl flex items-center justify-center overflow-hidden shadow-inner">
@@ -436,6 +488,7 @@
                                 </div>
                             </div>
 
+                            <!-- El Emocionómetro del Inspector Drilo -->
                             <div class="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm flex flex-col md:flex-row">
                                 <div class="md:w-1/3 bg-gray-50 flex items-center justify-center p-6 border-r border-gray-200">
                                     <div class="w-full aspect-[3/4] bg-white border border-gray-200 rounded-xl flex items-center justify-center overflow-hidden shadow-inner">
@@ -459,10 +512,12 @@
                                 </div>
                             </div>
 
+                            <!-- Otros libros recomendados -->
                             <h4 class="text-xl font-bold text-gray-800 mt-8 mb-4">Ludoteca Complementaria:</h4>
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 flex gap-4 hover:shadow-md transition-shadow">
-                                    <div class="w-24 aspect-[3/4] bg-white border border-gray-200 rounded flex-shrink-0 flex items-center justify-center text-xs text-gray-400 text-center p-2 shadow-sm"></div>
+                                    <div class="w-24 aspect-[3/4] bg-white border border-gray-200 rounded flex-shrink-0 flex items-center justify-center text-xs text-gray-400 text-center p-2 shadow-sm">
+                                    </div>
                                     <div>
                                         <h5 class="font-bold text-gray-800 text-lg leading-tight">Vaya Rabieta</h5>
                                         <p class="text-xs text-gray-500 mb-1">Mireille d'Allancé</p>
@@ -470,7 +525,8 @@
                                     </div>
                                 </div>
                                 <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 flex gap-4 hover:shadow-md transition-shadow">
-                                    <div class="w-24 aspect-[3/4] bg-white border border-gray-200 rounded flex-shrink-0 flex items-center justify-center text-xs text-gray-400 text-center p-2 shadow-sm"></div>
+                                    <div class="w-24 aspect-[3/4] bg-white border border-gray-200 rounded flex-shrink-0 flex items-center justify-center text-xs text-gray-400 text-center p-2 shadow-sm">
+                                    </div>
                                     <div>
                                         <h5 class="font-bold text-gray-800 text-lg leading-tight">El Cerebro del Niño</h5>
                                         <p class="text-xs text-gray-500 mb-1">Daniel J. Siegel</p>
@@ -482,11 +538,13 @@
                     </div>
                 </section>
 
+                <!-- MÓDULO 4: HERRAMIENTAS -->
                 <section id="mod-herramientas" class="content-section hidden fade-in">
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
                         <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-4 inline-block">Módulo 4</span>
                         <h1 class="text-4xl font-extrabold text-gray-800 mb-6">El Taller: Herramientas Físicas y Verbales</h1>
-
+                        
+                        <!-- Validar para Educar -->
                         <div class="bg-purple-50 p-6 rounded-2xl mb-8 border border-purple-100">
                             <h3 class="text-2xl font-bold text-purple-800 mb-3 flex items-center gap-2">
                                 <i class="fa-solid fa-heart-circle-check"></i> Validar para Educar: Todas las Emociones son Bienvenidas
@@ -500,12 +558,13 @@
                             <p class="text-gray-700 mt-3 text-sm italic">Ocultar o reprimir una emoción ("no llores, no pasa nada", "los niños grandes no se enojan") solo garantiza que esa emoción explote más tarde de forma desproporcionada.</p>
                         </div>
 
+                        <!-- Rincón de la calma -->
                         <div class="bg-green-50 p-6 rounded-2xl mb-8 border border-green-100">
                             <h3 class="text-2xl font-bold text-green-800 mb-3 flex items-center gap-2">
                                 <i class="fa-solid fa-campground"></i> El Rincón de la Calma (Espacio de Regulación)
                             </h3>
                             <p class="text-gray-700 mb-4">Es vital comprender que <strong>NO es la "Silla de Pensar" ni un lugar de castigo</strong>. Es un santuario de regulación sensorial al que el niño puede acudir de forma voluntaria, o invitado cariñosamente por la educadora.</p>
-
+                            
                             <div class="grid md:grid-cols-2 gap-4 mb-5">
                                 <div class="bg-white p-4 rounded-xl shadow-sm">
                                     <h4 class="font-bold text-gray-800 border-b pb-2 mb-2">¿Qué SÍ debe tener?</h4>
@@ -527,6 +586,7 @@
                                 </div>
                             </div>
 
+                            <!-- NUEVA SECCIÓN CREACIÓN Y MANTENIMIENTO -->
                             <div class="grid md:grid-cols-2 gap-4">
                                 <div class="bg-green-100/50 p-4 rounded-xl shadow-sm border border-green-200">
                                     <h4 class="font-bold text-green-800 border-b border-green-200 pb-2 mb-2"><i class="fa-solid fa-hammer text-green-600 mr-1"></i> ¿Cómo crearlo?</h4>
@@ -546,9 +606,11 @@
                                 </div>
                             </div>
 
+                            <!-- ADAPTACIÓN POR ETAPAS -->
                             <div class="mt-6 border-t border-green-200 pt-5">
                                 <h4 class="font-bold text-green-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-layer-group text-green-600"></i> Adaptación por Etapas de Desarrollo</h4>
                                 <div class="grid md:grid-cols-3 gap-4">
+                                    <!-- 0 a 18 meses -->
                                     <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 shadow-sm hover:shadow-md transition-shadow">
                                         <h5 class="font-bold text-purple-800 mb-1 text-lg">0 a 18 meses</h5>
                                         <p class="text-xs text-purple-600 font-semibold mb-3 uppercase tracking-wider">"El Nido Sensorial"</p>
@@ -558,6 +620,7 @@
                                             <li><strong>Uso:</strong> 100% acompañado. La educadora se sienta con el bebé y sirve como ancla física.</li>
                                         </ul>
                                     </div>
+                                    <!-- 1.5 a 2.5 años -->
                                     <div class="bg-pink-50 p-4 rounded-xl border border-pink-100 shadow-sm hover:shadow-md transition-shadow">
                                         <h5 class="font-bold text-pink-800 mb-1 text-lg">1.5 a 2.5 años</h5>
                                         <p class="text-xs text-pink-600 font-semibold mb-3 uppercase tracking-wider">"Espacio de Descarga"</p>
@@ -567,6 +630,7 @@
                                             <li><strong>Uso:</strong> Guiado de cerca. Se valida la necesidad de descarga física sin lastimar a otros.</li>
                                         </ul>
                                     </div>
+                                    <!-- 3 a 4 años -->
                                     <div class="bg-teal-50 p-4 rounded-xl border border-teal-100 shadow-sm hover:shadow-md transition-shadow">
                                         <h5 class="font-bold text-teal-800 mb-1 text-lg">3 a 4 años</h5>
                                         <p class="text-xs text-teal-600 font-semibold mb-3 uppercase tracking-wider">"Estación de Regulación"</p>
@@ -580,14 +644,16 @@
                             </div>
                         </div>
 
+                        <!-- La validación -->
                         <h3 class="text-2xl font-bold text-gray-800 mb-4">La Fórmula de la Validación Emocional</h3>
                         <p class="text-gray-600 mb-6">El secreto para desactivar una crisis incipiente es validar la emoción, pero limitando la conducta inadecuada. Usaremos la estructura <strong>N.V.L. (Nombrar, Validar, Limitar)</strong>:</p>
-
+                        
                         <div class="bg-slate-50 border-l-4 border-slate-500 p-5 rounded-r-xl mb-8">
                             <p class="text-lg text-gray-800 font-medium mb-2"><em>"Veo que estás [Emoción], es normal sentirlo por [Situación], pero no podemos [Conducta]."</em></p>
                             <p class="text-gray-600 italic">Ejemplo: "Veo que estás muy enojado, es normal sentir rabia cuando se termina el tiempo de juego, pero no dejaré que tires los bloques. Vamos a recogerlos juntos."</p>
                         </div>
 
+                        <!-- Estrategias Diarias -->
                         <h3 class="text-2xl font-bold text-gray-800 mb-4">Rutinas de Educación Emocional</h3>
                         <ul class="space-y-4">
                             <li class="flex items-start gap-4 p-5 bg-white border border-gray-100 shadow-sm rounded-xl">
@@ -612,16 +678,19 @@
                                 </div>
                             </li>
                         </ul>
+
                     </div>
                 </section>
 
+                <!-- MÓDULO 5: PROTOCOLOS -->
                 <section id="mod-protocolos" class="content-section hidden fade-in">
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
                         <span class="bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-4 inline-block">Módulo 5</span>
                         <h1 class="text-4xl font-extrabold text-gray-800 mb-6">Protocolos de Intervención en Crisis</h1>
                         <p class="text-lg text-gray-600 mb-8">En la guardería enfrentaremos momentos de alto impacto y desborde físico. Es crucial actuar como un equipo unificado, desde la calma profesional y no desde el susto o la reactividad.</p>
-
+                        
                         <div class="space-y-8">
+                            <!-- Mordidas -->
                             <div class="bg-red-50 p-6 rounded-2xl border border-red-200">
                                 <h3 class="text-2xl font-bold text-red-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-tooth"></i> Protocolo ante Mordidas</h3>
                                 <p class="text-gray-700 mb-4">Las mordidas son comunes entre los 18 meses y 3 años por falta de lenguaje, dentición o exceso de estímulos. <strong>Jamás se debe morder al niño "para que vea qué se siente", ni estigmatizarlo como el niño "malo".</strong></p>
@@ -633,6 +702,7 @@
                                 </ol>
                             </div>
 
+                            <!-- Golpes y Agresiones Físicas -->
                             <div class="bg-orange-50 p-6 rounded-2xl border border-orange-200">
                                 <h3 class="text-2xl font-bold text-orange-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-hand-holding-hand"></i> Agresiones Físicas (Pegar/Arañar)</h3>
                                 <p class="text-gray-700 mb-4">Cuando un niño pierde el control y comienza a golpear o aventar objetos peligrosos, la seguridad es la prioridad absoluta.</p>
@@ -643,20 +713,22 @@
                                 </ul>
                             </div>
 
+                            <!-- Rabieta Severa -->
                             <div class="bg-yellow-50 p-6 rounded-2xl border border-yellow-200">
                                 <h3 class="text-2xl font-bold text-yellow-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-cloud-showers-heavy"></i> Desborde Emocional Severo (Gran Rabieta)</h3>
                                 <p class="text-gray-700 mb-4">El niño está tirado en el suelo, gritando y fuera de control (Secuestro Amigdalar total).</p>
                                 <ul class="list-disc pl-5 text-gray-700 space-y-3 font-medium">
-                                    <li><strong>Minimizar estímulos:</strong> Si es posible, bajar la luz, apagar música, alejar a los curiosos.</li>
+                                    <li><strong>Minimizar estímulos:</strong> Si es possible, bajar la luz, apagar música, alejar a los curiosos.</li>
                                     <li><strong>Acompañamiento Silencioso:</strong> No intentar razonar, hablar demasiado o pedirle que se calle. Solo estar presente. Sentarse a su nivel a una distancia prudente.</li>
                                     <li><strong>Ofrecer anclaje cuando empiece a bajar la intensidad:</strong> "¿Necesitas un abrazo?", o acercar un vaso con agua (el acto de tragar ayuda a regular el sistema nervioso).</li>
                                 </ul>
                             </div>
 
+                            <!-- MINI-RETO 2 -->
                             <div class="mt-10 bg-red-600 rounded-3xl p-6 text-white shadow-lg">
                                 <h3 class="text-2xl font-bold mb-2"><i class="fa-solid fa-puzzle-piece mr-2"></i> Mini-Reto de Conocimiento</h3>
                                 <p class="text-red-200 mb-6 text-sm">Comprueba lo aprendido sobre herramientas y protocolos.</p>
-
+                                
                                 <div class="bg-white rounded-2xl p-6 text-gray-800" id="quiz-2-container">
                                     <p class="font-bold mb-3">1. Según la fórmula N.V.L., ¿cuál es la forma correcta de actuar?</p>
                                     <div class="space-y-2 mb-6 text-sm">
@@ -687,13 +759,16 @@
                     </div>
                 </section>
 
+                <!-- MÓDULO 6: BANCO DE ACTIVIDADES E IA -->
                 <section id="mod-actividades" class="content-section hidden fade-in">
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
                         <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-4 inline-block">Módulo 6</span>
                         <h1 class="text-4xl font-extrabold text-gray-800 mb-6">Banco de Actividades de Aula</h1>
                         <p class="text-lg text-gray-600 mb-8">El juego es el lenguaje del cerebro infantil. En esta sección definiremos la <strong>fórmula pedagógica</strong> de tres dimensiones fundamentales y contaremos con un asistente de IA para expandir nuestra creatividad.</p>
 
+                        <!-- Capítulos Teóricos (Acordeón Visual) -->
                         <div class="grid md:grid-cols-3 gap-6 mb-10">
+                            <!-- Dimensión 1 -->
                             <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100 flex flex-col h-full">
                                 <div class="bg-blue-100 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center mb-3 text-lg"><i class="fa-solid fa-eye"></i></div>
                                 <h4 class="font-bold text-gray-800 text-lg mb-2">Reconocer y Nombrar</h4>
@@ -701,7 +776,7 @@
                                 <p class="text-sm text-gray-600 flex-1"><strong>¿Cómo crearlas?</strong> Primero conecta la emoción con una sensación física, luego asocia una imagen (color o monstruo) y finalmente entrega al niño el vocabulario exacto.</p>
                                 <span class="text-xs font-bold text-blue-500 mt-3 bg-white px-2 py-1 rounded inline-block text-center border border-blue-100">Ej: "El Espejo de las Caras"</span>
                             </div>
-
+                            <!-- Dimensión 2 -->
                             <div class="bg-green-50 p-5 rounded-2xl border border-green-100 flex flex-col h-full">
                                 <div class="bg-green-100 text-green-600 w-10 h-10 rounded-full flex items-center justify-center mb-3 text-lg"><i class="fa-solid fa-spa"></i></div>
                                 <h4 class="font-bold text-gray-800 text-lg mb-2">Regular y Gestionar</h4>
@@ -709,7 +784,7 @@
                                 <p class="text-sm text-gray-600 flex-1"><strong>¿Cómo crearlas?</strong> Permite liberar la tensión motriz intensamente (saltar/romper papel), redirige a un estímulo sensorial y finaliza bajando el ritmo cardíaco.</p>
                                 <span class="text-xs font-bold text-green-500 mt-3 bg-white px-2 py-1 rounded inline-block text-center border border-green-100">Ej: "Danza del Hielo y Fuego"</span>
                             </div>
-
+                            <!-- Dimensión 3 -->
                             <div class="bg-pink-50 p-5 rounded-2xl border border-pink-100 flex flex-col h-full">
                                 <div class="bg-pink-100 text-pink-600 w-10 h-10 rounded-full flex items-center justify-center mb-3 text-lg"><i class="fa-solid fa-handshake-angle"></i></div>
                                 <h4 class="font-bold text-gray-800 text-lg mb-2">Empatía y Habilidades</h4>
@@ -719,6 +794,7 @@
                             </div>
                         </div>
 
+                        <!-- CREADOR DE ACTIVIDADES IA -->
                         <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-6 md:p-8 border border-indigo-100 shadow-inner">
                             <div class="flex items-center gap-3 mb-2">
                                 <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-purple-600 text-xl shadow-sm">
@@ -727,7 +803,7 @@
                                 <h3 class="text-2xl font-extrabold text-indigo-900">Asistente Creativo IA</h3>
                             </div>
                             <p class="text-indigo-700 text-sm mb-6 ml-15">¿Te quedaste sin ideas? Selecciona los parámetros y nuestra IA pedagógica te generará una actividad a la medida.</p>
-
+                            
                             <div class="bg-white p-5 rounded-2xl shadow-sm border border-indigo-50">
                                 <div class="grid md:grid-cols-2 gap-4 mb-4">
                                     <div>
@@ -748,7 +824,7 @@
                                         </select>
                                     </div>
                                 </div>
-
+                                
                                 <div class="mb-4">
                                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Contexto o Materiales (Opcional)</label>
                                     <input type="text" id="iaContexto" placeholder="Ej. 'Tenemos pintura y cajas', o 'Para un niño muy hiperactivo'" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none">
@@ -759,14 +835,19 @@
                                 </button>
                             </div>
 
+                            <!-- Resultado de la IA -->
                             <div id="aiResultContainer" class="hidden mt-6">
                                 <h4 class="text-sm font-bold text-indigo-800 uppercase tracking-wider mb-2">Sugerencia de la IA:</h4>
-                                <div id="aiResultText" class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 text-gray-700 leading-relaxed text-sm"></div>
+                                <div id="aiResultText" class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100 text-gray-700 leading-relaxed text-sm">
+                                    <!-- Aquí va el resultado -->
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </section>
 
+                <!-- MÓDULO 7: LA RUTINA DIARIA -->
                 <section id="mod-rutina" class="content-section hidden fade-in">
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
                         <span class="bg-cyan-100 text-cyan-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-4 inline-block">Módulo 7</span>
@@ -774,6 +855,8 @@
                         <p class="text-lg text-gray-600 mb-8">La rutina no es solo una lista de horarios; es la estructura que le da <strong>seguridad y predictibilidad</strong> al cerebro infantil. Un niño que sabe qué va a pasar después, es un niño con una amígdala tranquila y un sistema nervioso relajado.</p>
 
                         <div class="relative border-l-4 border-cyan-100 ml-4 md:ml-8 space-y-10 pb-4">
+                            
+                            <!-- 1. La Llegada -->
                             <div class="relative pl-8 md:pl-10">
                                 <div class="absolute -left-[22px] top-1 bg-white border-4 border-cyan-400 w-10 h-10 rounded-full flex items-center justify-center text-cyan-500 shadow-sm">
                                     <i class="fa-solid fa-sun text-sm"></i>
@@ -789,6 +872,7 @@
                                 </div>
                             </div>
 
+                            <!-- 2. La Asamblea -->
                             <div class="relative pl-8 md:pl-10">
                                 <div class="absolute -left-[22px] top-1 bg-white border-4 border-blue-400 w-10 h-10 rounded-full flex items-center justify-center text-blue-500 shadow-sm">
                                     <i class="fa-solid fa-users text-sm"></i>
@@ -804,6 +888,7 @@
                                 </div>
                             </div>
 
+                            <!-- 3. Las Transiciones -->
                             <div class="relative pl-8 md:pl-10">
                                 <div class="absolute -left-[22px] top-1 bg-white border-4 border-purple-400 w-10 h-10 rounded-full flex items-center justify-center text-purple-500 shadow-sm">
                                     <i class="fa-solid fa-rotate text-sm"></i>
@@ -819,6 +904,7 @@
                                 </div>
                             </div>
 
+                            <!-- 4. Cuidados Básicos -->
                             <div class="relative pl-8 md:pl-10">
                                 <div class="absolute -left-[22px] top-1 bg-white border-4 border-pink-400 w-10 h-10 rounded-full flex items-center justify-center text-pink-500 shadow-sm">
                                     <i class="fa-solid fa-bed text-sm"></i>
@@ -833,6 +919,7 @@
                                 </div>
                             </div>
 
+                            <!-- 5. La Despedida -->
                             <div class="relative pl-8 md:pl-10">
                                 <div class="absolute -left-[22px] top-1 bg-white border-4 border-orange-400 w-10 h-10 rounded-full flex items-center justify-center text-orange-500 shadow-sm">
                                     <i class="fa-solid fa-house-chimney text-sm"></i>
@@ -846,10 +933,12 @@
                                     </ul>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </section>
 
+                <!-- MÓDULO 8: PLANIFICACIÓN ANUAL -->
                 <section id="mod-planificacion" class="content-section hidden fade-in">
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
                         <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-4 inline-block">Módulo 8</span>
@@ -861,7 +950,8 @@
                                 <i class="fa-solid fa-calendar-days text-emerald-600"></i> Planificador Mensual
                             </h3>
                             <p class="text-emerald-800 text-sm mb-6">Filtra por el mes en curso para descubrir el foco emocional, la actividad sugerida y el material de lectura que guiará las dinámicas del aula.</p>
-
+                            
+                            <!-- Filtro de Meses -->
                             <div class="mb-6">
                                 <select id="filtroMes" onchange="mostrarPlanificacionMes()" class="w-full p-4 bg-white border-2 border-emerald-200 text-emerald-900 font-bold rounded-xl focus:ring-4 focus:ring-emerald-100 outline-none text-lg cursor-pointer shadow-sm transition-all appearance-none relative">
                                     <option value="septiembre">Septiembre - Adaptación y Vínculo</option>
@@ -879,6 +969,7 @@
                                 </select>
                             </div>
 
+                            <!-- Tarjeta de Resultados -->
                             <div id="tarjetaMes" class="bg-white rounded-2xl shadow-md border border-emerald-100 overflow-hidden fade-in">
                                 <div class="bg-emerald-600 text-white p-4">
                                     <h4 id="pm-titulo" class="text-xl font-bold uppercase tracking-wide">Septiembre: Adaptación y Vínculo Seguro</h4>
@@ -908,20 +999,24 @@
                     </div>
                 </section>
 
+                <!-- MÓDULO 9: EVALUACIÓN Y CERTIFICADO -->
                 <section id="mod-evaluacion" class="content-section hidden fade-in">
                     <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 relative overflow-hidden">
                         <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide mb-4 inline-block">Módulo 9</span>
                         <h1 class="text-4xl font-extrabold text-gray-800 mb-6">Evaluación Final y Certificación</h1>
-
+                        
+                        <!-- Contenedor del Examen -->
                         <div id="examen-container">
                             <p class="text-lg text-gray-600 mb-8">Has llegado al final del curso. Para obtener tu certificado, responde correctamente las siguientes <strong class="text-amber-600">20 preguntas</strong> (seleccionadas al azar). Necesitas 18 aciertos para aprobar. ¡Éxito!</p>
-
+                            
                             <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 mb-8 shadow-inner text-center">
                                 <p class="font-bold text-gray-800 mb-2">Tu certificado será emitido a nombre de:</p>
                                 <p id="nombreEducadoraDisplay" class="text-2xl font-extrabold text-amber-600 uppercase tracking-wide"></p>
                             </div>
 
-                            <div id="examen-preguntas-container" class="space-y-6 mb-8"></div>
+                            <div id="examen-preguntas-container" class="space-y-6 mb-8">
+                                <!-- Las 20 preguntas se inyectan por JS aquí -->
+                            </div>
 
                             <button onclick="calificarExamen()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-6 rounded-xl transition-colors shadow-md text-lg">
                                 <i class="fa-solid fa-check-double mr-2"></i> Enviar Evaluación
@@ -929,13 +1024,14 @@
                             <p id="examen-error" class="text-red-500 font-bold text-center mt-4 hidden"></p>
                         </div>
 
+                        <!-- Contenedor de Éxito (Certificado Disponible) -->
                         <div id="exito-container" class="hidden text-center py-10">
                             <div class="w-24 h-24 bg-green-100 text-green-500 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-inner">
                                 <i class="fa-solid fa-award"></i>
                             </div>
                             <h2 class="text-3xl font-extrabold text-gray-800 mb-4">¡Felicidades, has aprobado!</h2>
                             <p class="text-gray-600 text-lg mb-8">Tu certificado de Gestión Emocional BabyStar está listo. Ha quedado guardado en tu perfil para cuando lo necesites.</p>
-
+                            
                             <button id="btnDescargarPdf" onclick="descargarPDF(event)" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl transition-colors shadow-lg text-lg inline-flex items-center gap-2">
                                 <i class="fa-solid fa-file-pdf"></i> Descargar Certificado PDF
                             </button>
@@ -943,26 +1039,35 @@
                     </div>
                 </section>
 
+                <!-- ELEMENTO OCULTO PARA EL DIPLOMA PDF (TAMAÑO CARTA CON MÁRGENES 0.25 INCHES, SIN QR) -->
+                <!-- Se ubica fuera de la pantalla (left: -10000px) para que no moleste en el diseño, pero se trae a left:0 al momento de descargar para que la librería html2pdf lo capture correctamente -->
                 <div id="pdf-wrapper" style="position: absolute; left: -10000px; top: 0; z-index: -1000; width: 1008px;">
                     <div id="diploma-imprimible" style="width: 1008px; height: 768px; padding: 40px; background-color: #fdf8f5; border: 15px solid #f59e0b; text-align: center; font-family: 'Nunito', sans-serif; box-sizing: border-box;">
+                        
+                        <!-- Usamos display:flex y justify-content:space-between para que las firmas JAMÁS se encimen al texto superior -->
                         <div style="border: 2px solid #fcd34d; height: 100%; padding: 40px; box-sizing: border-box; background-color: white; display: flex; flex-direction: column; justify-content: space-between; align-items: center;">
+                            
+                            <!-- SECCIÓN SUPERIOR: TÍTULOS Y NOMBRE -->
                             <div style="width: 100%;">
                                 <i class="fa-solid fa-star" style="color: #eab308; font-size: 60px; margin-bottom: 20px;"></i>
                                 <h1 style="color: #9a3412; font-size: 50px; margin: 0; text-transform: uppercase; font-weight: 800;">Certificado de Excelencia</h1>
                                 <p style="color: #d97706; font-size: 24px; letter-spacing: 2px; margin-top: 10px; font-weight: 700;">Gestión Emocional BabyStar</p>
                                 <p style="color: #6b7280; font-size: 22px; margin-top: 50px;">Se otorga el presente diploma a:</p>
-
+                                
                                 <h2 id="diploma-nombre-render" style="color: #1f2937; font-size: 50px; margin: 20px 0; border-bottom: 3px solid #e5e7eb; display: inline-block; padding-bottom: 10px; min-width: 600px; font-weight: 800;">Nombre del Educador</h2>
-
+                                
                                 <p style="color: #4b5563; font-size: 22px; max-width: 800px; margin: 30px auto 0 auto; line-height: 1.6;">Por haber completado con éxito el programa integral de capacitación, demostrando dominio en neurobiología infantil, estrategias de co-regulación y protocolos de crisis respetuosos.</p>
                             </div>
-
+                            
+                            <!-- SECCIÓN INFERIOR: FIRMAS Y FECHA (FIJA AL FONDO) -->
                             <div style="display: flex; justify-content: space-around; align-items: flex-end; width: 100%; padding: 0 40px; margin-bottom: 20px;">
+                                <!-- Left: Signature -->
                                 <div style="text-align: center; margin-bottom: 10px;">
                                     <div style="border-bottom: 2px solid #9ca3af; width: 250px; margin-bottom: 10px;"></div>
                                     <p style="color: #6b7280; font-size: 18px; margin: 0; font-weight: 600;">Dirección Académica</p>
                                 </div>
 
+                                <!-- Right: Date & Time -->
                                 <div style="text-align: center; margin-bottom: 10px;">
                                     <p id="diploma-fecha" style="color: #4b5563; font-size: 18px; margin: 0 0 5px 0; font-weight: 700; min-height: 27px;"></p>
                                     <div style="border-bottom: 2px solid #9ca3af; width: 250px; margin-bottom: 10px;"></div>
@@ -973,22 +1078,27 @@
                     </div>
                 </div>
 
-                <div class="mt-8 flex justify-between items-center border-t border-gray-200 pt-6">
-                    <button onclick="navegar(-1)" id="btnPrev" class="hidden px-5 py-2.5 bg-white border border-gray-300 text-gray-600 rounded-xl hover:bg-gray-50 font-semibold transition-colors">
+                <!-- Botones de navegación inferior -->
+                <div class="course-bottom-nav mt-8 flex justify-between items-center gap-3 border-t border-gray-200 pt-6">
+                    <button onclick="navegar(-1)" id="btnPrev" class="hidden shrink-0 px-4 sm:px-5 py-2.5 bg-white border border-gray-300 text-gray-600 rounded-xl hover:bg-gray-50 font-semibold transition-colors">
                         <i class="fa-solid fa-arrow-left mr-2"></i> Anterior
                     </button>
-                    <div class="flex-1"></div>
-                    <button onclick="navegar(1)" id="btnNext" class="px-5 py-2.5 bg-orange-500 text-white rounded-xl hover:bg-orange-600 font-semibold transition-colors shadow-sm">
+                    <div class="flex-1 min-w-0"></div>
+                    <button onclick="navegar(1)" id="btnNext" class="shrink-0 px-4 sm:px-5 py-2.5 bg-orange-500 text-white rounded-xl hover:bg-orange-600 font-semibold transition-colors shadow-sm">
                         Siguiente <i class="fa-solid fa-arrow-right ml-2"></i>
                     </button>
                 </div>
+
             </div>
         </main>
     </div>
 
     <script>
-        let usuarioActual = "";
-        let nombreEducadora = "";
+        // ==========================================
+        // LÓGICA DE LOGIN
+        // ==========================================
+        let usuarioActual = ""; // Variable global para guardar el ID
+        let nombreEducadora = ""; // Variable global para el certificado
 
         async function iniciarSesion(e) {
             e.preventDefault();
@@ -997,6 +1107,7 @@
             const btn = document.getElementById('loginBtn');
             const errorMsg = document.getElementById('loginError');
 
+            // Estado de carga
             btn.innerHTML = '<span class="loader"></span> Verificando...';
             btn.disabled = true;
             errorMsg.classList.add('hidden');
@@ -1005,26 +1116,42 @@
                 const response = await fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: userInput,
-                        password: passInput
-                    })
+                    body: JSON.stringify({ username: userInput, password: passInput })
                 });
 
-                const data = await response.json();
+                const data = await response.json().catch(() => ({}));
 
-                if (response.ok && data.ok) {
-                    nombreEducadora = data.displayName;
-                    usuarioActual = data.userKey;
+                if (!response.ok) {
+                    throw new Error(data.message || 'No se pudo validar el acceso.');
+                }
+
+                if (data.success) {
+                    nombreEducadora = data.nombre || userInput;
+                    usuarioActual = userInput.toLowerCase();
                     document.getElementById('nombreEducadoraDisplay').textContent = nombreEducadora;
                     verificarCertificadoGuardado();
                     mostrarCurso();
-                    return;
+                } else {
+                    mostrarError(btn, errorMsg, data.message || "Usuario o contraseña incorrectos. Verifica tu información.");
                 }
 
-                mostrarError(btn, errorMsg, "Usuario o contraseña incorrectos. Verifica tu información.");
             } catch (error) {
-                console.error("Error de login:", error);
+                console.error("Error validando acceso:", error);
+                mostrarError(btn, errorMsg, error.message || "Error al conectar con la base de datos. Intenta de nuevo.");
+            }
+        }
+
+                if (encontrado) { 
+                    document.getElementById('nombreEducadoraDisplay').textContent = nombreEducadora;
+                    verificarCertificadoGuardado();
+                    mostrarCurso();
+                } else {
+                    mostrarError(btn, errorMsg, "Usuario o contraseña incorrectos. Verifica tu información.");
+                }
+
+            } catch (error) {
+                console.error("Error conectando al sheet:", error);
+                // En caso de que haya problemas con la conexión (CORS, red), mostramos el error
                 mostrarError(btn, errorMsg, "Error al conectar con la base de datos. Intenta de nuevo.");
             }
         }
@@ -1039,6 +1166,7 @@
         function mostrarCurso() {
             document.getElementById('login-view').classList.add('hidden');
             document.getElementById('course-view').classList.remove('hidden');
+            cerrarMenuMovil();
         }
 
         function cerrarSesion() {
@@ -1046,16 +1174,23 @@
             document.getElementById('passwordInput').value = '';
             document.getElementById('loginBtn').innerHTML = 'Entrar al Curso';
             document.getElementById('loginBtn').disabled = false;
+            
             document.getElementById('course-view').classList.add('hidden');
             document.getElementById('login-view').classList.remove('hidden');
+            
+            // Regresar a inicio
             cambiarModulo('intro');
         }
 
+        // ==========================================
+        // LÓGICA DE NAVEGACIÓN DEL CURSO
+        // ==========================================
         const modulos = ['intro', 'fundamentos', 'etapas', 'biblioteca', 'herramientas', 'protocolos', 'actividades', 'rutina', 'planificacion', 'evaluacion'];
         let currentIndex = 0;
-        let examenGenerado = false;
+        let examenGenerado = false; // Evita que las preguntas cambien a la mitad
         let preguntasExamenActual = [];
 
+        // BASE DE DATOS DE PREGUNTAS DEL CURSO (POOL)
         const poolExamenFinal = [
             { q: "¿Cuál es la función principal de la Amígdala en el cerebro infantil?", a: "Controlar el razonamiento lógico", b: "Actuar como alarma procesando emociones intensas", c: "Regular la temperatura corporal", correct: "b" },
             { q: "¿Qué ocurre durante un 'Secuestro Amigdalar'?", a: "El Córtex Prefrontal se apaga y dominan los instintos", b: "El niño analiza la situación lógicamente", c: "El cerebro reptiliano se relaja", correct: "a" },
@@ -1087,9 +1222,9 @@
 
         function generarPreguntasExamen() {
             if (examenGenerado) return;
-
+            
             const shuffled = [...poolExamenFinal].sort(() => 0.5 - Math.random());
-            preguntasExamenActual = shuffled.slice(0, 20);
+            preguntasExamenActual = shuffled.slice(0, 20); // Tomamos 20 aleatorias
 
             const container = document.getElementById('examen-preguntas-container');
             container.innerHTML = '';
@@ -1112,36 +1247,42 @@
                     </div>
                 `;
             });
-
             examenGenerado = true;
         }
 
         function cambiarModulo(idModulo) {
+            // Ocultar todos
             document.querySelectorAll('.content-section').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-
+            
+            // Mostrar seleccionado
             document.getElementById(`mod-${idModulo}`).classList.remove('hidden');
-
+            
+            // Marcar botón activo
             const index = modulos.indexOf(idModulo);
             currentIndex = index;
             document.querySelectorAll('.nav-item')[index].classList.add('active');
 
+            // Actualizar botones prev/next
             actualizarBotonesNavegacion();
 
-            if (idModulo === 'evaluacion') {
+            // Cargar examen si entran al módulo 9
+            if(idModulo === 'evaluacion') {
                 generarPreguntasExamen();
             }
 
+            // Cerrar menú móvil si está abierto
             const navMenu = document.getElementById('navMenu');
             if (window.innerWidth < 640 && !navMenu.classList.contains('hidden')) {
                 navMenu.classList.add('hidden');
             }
 
+            // Scroll al inicio
             document.querySelector('main').scrollTop = 0;
         }
 
         function navegar(direccion) {
-            const nuevoIndex = currentIndex + direccion;
+            let nuevoIndex = currentIndex + direccion;
             if (nuevoIndex >= 0 && nuevoIndex < modulos.length) {
                 cambiarModulo(modulos[nuevoIndex]);
             }
@@ -1151,26 +1292,57 @@
             const btnPrev = document.getElementById('btnPrev');
             const btnNext = document.getElementById('btnNext');
 
-            if (currentIndex === 0) btnPrev.classList.add('hidden');
-            else btnPrev.classList.remove('hidden');
+            if (currentIndex === 0) {
+                btnPrev.classList.add('hidden');
+            } else {
+                btnPrev.classList.remove('hidden');
+            }
 
-            if (currentIndex === modulos.length - 1) btnNext.classList.add('hidden');
-            else btnNext.classList.remove('hidden');
+            if (currentIndex === modulos.length - 1) {
+                btnNext.classList.add('hidden');
+            } else {
+                btnNext.classList.remove('hidden');
+            }
         }
 
+        function cerrarMenuMovil() {
+            if (window.innerWidth < 640) {
+                const menu = document.getElementById('navMenu');
+                menu.classList.add('hidden');
+                menu.classList.remove('mobile-open');
+            }
+        }
+
+        // Menú Móvil Toggle
         document.getElementById('mobileMenuBtn').addEventListener('click', () => {
-            document.getElementById('navMenu').classList.toggle('hidden');
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('mobile-open');
         });
+
+        window.addEventListener('resize', () => {
+            const menu = document.getElementById('navMenu');
+            if (window.innerWidth >= 640) {
+                menu.classList.remove('hidden', 'mobile-open');
+            } else if (!menu.classList.contains('mobile-open')) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // ==========================================
+        // LÓGICA DEL ASISTENTE DE INTELIGENCIA ARTIFICIAL
+        // ==========================================
 
         async function generarActividadIA() {
             const btn = document.getElementById('btnGenerarIA');
             const resultContainer = document.getElementById('aiResultContainer');
             const resultText = document.getElementById('aiResultText');
-
+            
             const edad = document.getElementById('iaEdad').options[document.getElementById('iaEdad').selectedIndex].text;
             const objetivo = document.getElementById('iaObjetivo').value;
             const contexto = document.getElementById('iaContexto').value;
 
+            // Mostrar estado de carga
             btn.disabled = true;
             btn.innerHTML = '<span class="loader border-white border-top-indigo-200"></span> Generando magia...';
             resultContainer.classList.remove('hidden');
@@ -1191,31 +1363,24 @@ No incluyas introducciones genéricas. Devuelve la respuesta directamente en est
                 const response = await fetch('/api/gemini', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: promptUsuario }] }],
-                        systemInstruction: {
-                            parts: [{
-                                text: "Eres una IA experta en educación emocional infantil. Responde siempre de forma amable, pedagógica y en español."
-                            }]
-                        }
-                    })
+                    body: JSON.stringify({ prompt: promptUsuario })
                 });
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Error de red con la API: ${response.status} - ${errorText}`);
-                }
+                const data = await response.json().catch(() => ({}));
 
-                const data = await response.json();
-                let textoRespuesta = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!response.ok || !data.text) throw new Error(data.error || "Error de red con la API");
 
-                if (textoRespuesta) {
+                let textoRespuesta = data.text;
+                
+                if(textoRespuesta) {
+                    // Formatear el markdown básico (Negritas y saltos de línea) a HTML
                     textoRespuesta = textoRespuesta.replace(/\*\*(.*?)\*\*/g, '<strong class="text-indigo-800 text-base block mt-3 mb-1"><i class="fa-solid fa-star fa-2xs text-yellow-400 mr-1"></i> $1</strong>');
                     textoRespuesta = textoRespuesta.replace(/\n/g, '<br>');
                     resultText.innerHTML = textoRespuesta;
                 } else {
                     throw new Error("Respuesta vacía");
                 }
+
             } catch (error) {
                 console.error("Error IA:", error);
                 resultText.innerHTML = '<p class="text-red-500 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> Vaya, hubo un pequeño problema de conexión con el Asistente IA. Por favor, intenta presionar el botón de nuevo.</p>';
@@ -1225,74 +1390,77 @@ No incluyas introducciones genéricas. Devuelve la respuesta directamente en est
             }
         }
 
+        // ==========================================
+        // LÓGICA DE PLANIFICACIÓN ANUAL (FILTRO DE MESES)
+        // ==========================================
         const datosPlanificacion = {
-            septiembre: {
+            'septiembre': {
                 titulo: 'Septiembre: Adaptación y Vínculo Seguro',
                 foco: 'Establecer a la educadora como base segura. Validar la angustia de separación y construir rutinas predecibles.',
                 actividad: '"El cordón invisible". Dinámica grupal con estambre para visualizar que aunque mamá/papá no están, seguimos conectados.',
                 libro: '"El monstruo de colores" (Enfoque en emoción revuelta y confusión por el nuevo entorno).'
             },
-            octubre: {
+            'octubre': {
                 titulo: 'Octubre: Identificación Básica',
                 foco: 'Nombrar las emociones primarias (alegría, tristeza, rabia, miedo). Asociar cada emoción con un color y una sensación física.',
                 actividad: '"Los botes de las emociones". Clasificar pompones de colores en frascos según cómo nos sentimos al llegar a la asamblea.',
                 libro: '"El monstruo de colores" (Enfoque en separar y ordenar las emociones cada una en su frasco).'
             },
-            noviembre: {
+            'noviembre': {
                 titulo: 'Noviembre: Gestionando la Rabia',
                 foco: 'Comprender que el enojo es natural, pero golpear no lo es. Introducir o reforzar el Rincón de la Calma como herramienta.',
                 actividad: '"Bailar la rabia". Sesión de movimiento intenso con papel periódico para rasgar y liberar tensión motriz de forma segura.',
-                libro: '"Vaya Rabieta" de Mireille d\\'Allancé.'
+                libro: '"Vaya Rabieta" de Mireille d\'Allancé.'
             },
-            diciembre: {
+            'diciembre': {
                 titulo: 'Diciembre: Alegría y Gratitud',
                 foco: 'Fomentar el sentido de comunidad, compartir la alegría, la ilusión y reconocer las cosas buenas de nuestro salón.',
                 actividad: '"El árbol de los abrazos". Crear un mural donde cada niño ponga su huella para agradecer algo que le gusta de sus amigos.',
                 libro: 'Cuentos sobre la amistad, la empatía y la temática de invierno/festividades.'
             },
-            enero: {
+            'enero': {
                 titulo: 'Enero: Nuevos Comienzos y Calma',
                 foco: 'Retomar rutinas tras vacaciones. Trabajar la regulación parasimpática (respiración profunda, masajes, retorno a la calma).',
                 actividad: '"Soplar la velita y oler la flor". Prácticas diarias de respiración lúdica al volver del patio o actividades intensas.',
                 libro: '"El Emocionómetro del Inspector Drilo" (Foco en el nivel 0: La Calma y la Serenidad).'
             },
-            febrero: {
+            'febrero': {
                 titulo: 'Febrero: Amistad y Empatía',
                 foco: 'Trabajar el reconocimiento del "otro". Fomentar el juego cooperativo, ceder turnos y la resolución inicial de conflictos.',
                 actividad: '"El hospital de los osos". Juego de roles donde cuidamos y consolamos a peluches que están "tristes" o "enfermos".',
                 libro: 'Cuentos enfocados en la empatía y la colaboración grupal.'
             },
-            marzo: {
+            'marzo': {
                 titulo: 'Marzo: El Miedo y la Seguridad',
                 foco: 'Validar los miedos normativos de la edad (oscuridad, ruidos fuertes). Enseñar estrategias de anclaje y búsqueda de protección.',
                 actividad: '"El escudo protector". Crear manualidades de escudos mágicos y practicar pedir ayuda y abrazos a la educadora.',
                 libro: '"El monstruo de colores" (Enfoque exclusivo en el color negro/miedo).'
             },
-            abril: {
+            'abril': {
                 titulo: 'Abril: Sorpresa y Curiosidad',
                 foco: 'Estimular el asombro, la exploración sensorial segura y la capacidad de maravillarse ante cosas nuevas y divertidas.',
                 actividad: '"Cajas misteriosas". Tocar texturas desconocidas con los ojos vendados y verbalizar qué sienten.',
                 libro: 'Libros infantiles interactivos tipo pop-up o de solapas ocultas.'
             },
-            mayo: {
+            'mayo': {
                 titulo: 'Mayo: Tristeza y Consuelo',
                 foco: 'Desmitificar que llorar es "de bebés". Aprender a validar la tristeza, pedir abrazos y consolar a un compañero cuando llora.',
                 actividad: '"La cajita de las lágrimas". Un espacio simbólico para dibujar la tristeza y transformarla cantando juntos.',
                 libro: '"El monstruo de colores" (Enfoque en el color azul/tristeza).'
             },
-            junio: {
+            'junio': {
                 titulo: 'Junio: Autonomía y Orgullo',
                 foco: 'Celebrar los logros motores y de lenguaje del ciclo. Reforzar el "yo puedo hacerlo" y la tolerancia a la frustración.',
                 actividad: '"Circuito de retos". Pasar obstáculos físicos y celebrar grupalmente a quien lo logra, fomentando el aplauso ajeno.',
                 libro: '"El Emocionómetro del Inspector Drilo" (Foco en el orgullo y la satisfacción personal).'
             },
-            julio: {
+            'julio': {
                 titulo: 'Julio: Resolución de Conflictos',
                 foco: 'Fomentar el uso de palabras en vez de manos. Practicar pedir perdón y ofrecer reparación activa ("¿qué hago para que te sientas mejor?").',
                 actividad: '"Teatro de títeres". Representar un conflicto típico del salón y pedir a los niños que sugieran el final pacífico.',
                 libro: 'Historias con moraleja social que involucren pedir disculpas reparadoras.'
             },
-            agosto: {
+            'agosto': {
                 titulo: 'Agosto: Despedidas y Transiciones',
                 foco: 'Preparar emocionalmente a los niños para cambiar de sala, de maestras o graduarse. Validar la nostalgia y la tristeza por el cierre.',
                 actividad: '"El álbum de recuerdos". Pintar y decorar un diploma o fotos de sus amigos para llevarse a casa como anclaje.',
@@ -1303,37 +1471,43 @@ No incluyas introducciones genéricas. Devuelve la respuesta directamente en est
         function mostrarPlanificacionMes() {
             const mesSeleccionado = document.getElementById('filtroMes').value;
             const data = datosPlanificacion[mesSeleccionado];
-
+            
+            // Animación CSS para que se vea un cambio suave
             const tarjeta = document.getElementById('tarjetaMes');
             tarjeta.classList.remove('fade-in');
-            void tarjeta.offsetWidth;
+            void tarjeta.offsetWidth; // Forzar reflow para reiniciar la animación
             tarjeta.classList.add('fade-in');
 
+            // Actualizar contenido de la tarjeta
             document.getElementById('pm-titulo').innerText = data.titulo;
             document.getElementById('pm-foco').innerText = data.foco;
             document.getElementById('pm-actividad').innerText = data.actividad;
             document.getElementById('pm-libro').innerText = data.libro;
         }
 
+        // Script de inicio: Detectar el mes actual automáticamente y mostrar su información al cargar
         document.addEventListener('DOMContentLoaded', () => {
-            const currentMonthIndex = new Date().getMonth();
+            const currentMonthIndex = new Date().getMonth(); // 0 es enero, 8 es septiembre...
             const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
             const select = document.getElementById('filtroMes');
-            if (select) {
-                select.value = meses[currentMonthIndex];
-                mostrarPlanificacionMes();
-            }
+            select.value = meses[currentMonthIndex];
+            mostrarPlanificacionMes();
+            cerrarMenuMovil();
         });
 
+        // ==========================================
+        // LÓGICA DE EVALUACIONES Y CERTIFICADO
+        // ==========================================
+        
         function revisarQuiz1() {
             const msg = document.getElementById('quiz-1-msg');
             const v1 = document.querySelector('input[name="q1_1"]:checked')?.value;
             const v2 = document.querySelector('input[name="q1_2"]:checked')?.value;
             const v3 = document.querySelector('input[name="q1_3"]:checked')?.value;
-
+            
             msg.classList.remove('hidden', 'text-red-500', 'text-green-500');
-
-            if (!v1 || !v2 || !v3) {
+            
+            if(!v1 || !v2 || !v3) {
                 msg.textContent = "Por favor, responde las 3 preguntas primero.";
                 msg.classList.add('text-red-500');
             } else if (v1 === 'b' && v2 === 'a' && v3 === 'c') {
@@ -1350,10 +1524,10 @@ No incluyas introducciones genéricas. Devuelve la respuesta directamente en est
             const v1 = document.querySelector('input[name="q2_1"]:checked')?.value;
             const v2 = document.querySelector('input[name="q2_2"]:checked')?.value;
             const v3 = document.querySelector('input[name="q2_3"]:checked')?.value;
-
+            
             msg.classList.remove('hidden', 'text-red-500', 'text-green-500');
-
-            if (!v1 || !v2 || !v3) {
+            
+            if(!v1 || !v2 || !v3) {
                 msg.textContent = "Por favor, responde las 3 preguntas primero.";
                 msg.classList.add('text-red-500');
             } else if (v1 === 'a' && v2 === 'b' && v3 === 'c') {
@@ -1366,8 +1540,9 @@ No incluyas introducciones genéricas. Devuelve la respuesta directamente en est
         }
 
         function calificarExamen() {
-            const nombre = nombreEducadora;
+            const nombre = nombreEducadora; // Tomar el nombre validado en el login
             const errorElement = document.getElementById('examen-error');
+            
             errorElement.classList.add('hidden');
 
             let score = 0;
@@ -1377,7 +1552,8 @@ No incluyas introducciones genéricas. Devuelve la respuesta directamente en est
                 const radio = document.querySelector(`input[name="ex_${index}"]:checked`);
                 const val = radio?.value;
                 const divPregunta = document.querySelector(`.pregunta-examen[data-index="${index}"]`);
-
+                
+                // Reiniciar bordes de revisión
                 divPregunta.classList.remove('border-red-400', 'border-green-400', 'bg-red-50', 'bg-green-50');
 
                 if (!val) {
@@ -1396,15 +1572,16 @@ No incluyas introducciones genéricas. Devuelve la respuesta directamente en est
                 return;
             }
 
+            // Se requiere el 90% (18/20) para pasar
             if (score >= 18) {
                 const opcionesFecha = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
                 const fechaHoy = new Date().toLocaleDateString('es-ES', opcionesFecha) + ' hrs';
-
+                
                 const datosCertificado = { nombre: nombre, fecha: fechaHoy };
                 localStorage.setItem(`BabyStarCert_${usuarioActual}`, JSON.stringify(datosCertificado));
-
+                
                 mostrarExitoCertificado(nombre, fechaHoy);
-                document.querySelector('#mod-evaluacion').scrollTo(0, 0);
+                document.querySelector('#mod-evaluacion').scrollTo(0,0);
             } else {
                 errorElement.innerHTML = `Obtuviste <strong>${score} de 20</strong>.<br>Necesitas al menos 18 respuestas correctas para aprobar.<br>Revisa las marcadas en <span class="text-red-600">rojo</span> e inténtalo nuevamente.`;
                 errorElement.classList.remove('hidden');
@@ -1417,6 +1594,7 @@ No incluyas introducciones genéricas. Devuelve la respuesta directamente en est
                 const datos = JSON.parse(dataGuardada);
                 mostrarExitoCertificado(datos.nombre, datos.fecha);
             } else {
+                // Restaurar vista de examen si no tiene certificado
                 document.getElementById('examen-container').classList.remove('hidden');
                 document.getElementById('exito-container').classList.add('hidden');
             }
@@ -1425,8 +1603,12 @@ No incluyas introducciones genéricas. Devuelve la respuesta directamente en est
         function mostrarExitoCertificado(nombre, fecha) {
             document.getElementById('examen-container').classList.add('hidden');
             document.getElementById('exito-container').classList.remove('hidden');
+            
+            // Llenar el diploma oculto
             document.getElementById('diploma-nombre-render').textContent = nombre;
             document.getElementById('diploma-fecha').textContent = fecha;
+            
+            // Resaltar en el menú que ya está graduado
             document.getElementById('nav-evaluacion').innerHTML = '<i class="fa-solid fa-award text-green-500 w-5 text-center"></i> Mi Certificado';
         }
 
@@ -1438,15 +1620,16 @@ No incluyas introducciones genéricas. Devuelve la respuesta directamente en est
 
             const wrapper = document.getElementById('pdf-wrapper');
             const elemento = document.getElementById('diploma-imprimible');
-
+            
+            // Opciones ajustadas para encajar perfecto en tamaño CARTA (Letter) con márgenes de 0.25in
             wrapper.style.left = "0px";
 
             const opciones = {
-                margin: 0.25,
-                filename: `Certificado_BabyStar_${document.getElementById('diploma-nombre-render').textContent.replace(/ /g, '_')}.pdf`,
-                image: { type: 'jpeg', quality: 1.0 },
-                html2canvas: { scale: 2, useCORS: true, logging: false, windowWidth: 1008 },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+                margin:       0.25,
+                filename:     `Certificado_BabyStar_${document.getElementById('diploma-nombre-render').textContent.replace(/ /g, '_')}.pdf`,
+                image:        { type: 'jpeg', quality: 1.0 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false, windowWidth: 1008 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
             };
 
             html2pdf().set(opciones).from(elemento).save().then(() => {
@@ -1460,6 +1643,7 @@ No incluyas introducciones genéricas. Devuelve la respuesta directamente en est
                 btn.disabled = false;
             });
         }
+
     </script>
 </body>
 </html>
