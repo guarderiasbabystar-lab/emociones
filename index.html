@@ -1099,26 +1099,16 @@
     // ==========================================
     let usuarioActual = "";
     let nombreEducadora = "";
-<script>
-    let usuarioActual = "";
-    let nombreEducadora = "";
-
-    function verificarCertificadoGuardado() {
-        try {
-            const certificado = localStorage.getItem("certificado");
-            if (certificado) {
-                console.log("Certificado encontrado");
-            }
-        } catch (e) {
-            console.warn("No se pudo verificar certificado", e);
+function verificarCertificadoGuardado() {
+    try {
+        const certificado = localStorage.getItem("certificado");
+        if (certificado) {
+            console.log("Certificado encontrado");
         }
+    } catch (e) {
+        console.warn("No se pudo verificar certificado", e);
     }
-
-    async function iniciarSesion(e) {
-        e.preventDefault();
-        // ...
-    }
-</script>
+}
     async function iniciarSesion(e) {
         e.preventDefault();
 
