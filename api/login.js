@@ -1,56 +1,47 @@
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ success: false, message: 'Método no permitido.' });
+  }
+
+  const csvUrl = process.env.CSV_URL;
+
+  if (!csvUrl) {
+    return res.status(500).json({ success: false, message: 'Falta configurar CSV_URL en Vercel.' });
   }
 
   try {
     const { username, password } = req.body || {};
 
     if (!username || !password) {
-      return res.status(400).json({ error: 'Missing username or password' });
+      return res.status(400).json({ success: false, message: 'Usuario y contraseña son obligatorios.' });
     }
 
-    const csvUrl = process.env.LOGIN_CSV_URL;
-    if (!csvUrl) {
-      return res.status(500).json({ error: 'LOGIN_CSV_URL is missing' });
-    }
+    const response = await fetch(csvUrl);
 
-    const response = await fetch(csvUrl, { cache: 'no-store' });
     if (!response.ok) {
-      return res.status(502).json({ error: 'Could not load login sheet' });
+      return res.status(502).json({ success: false, message: 'No se pudo cargar la lista de acceso.' });
     }
 
     const csvText = await response.text();
-    const rows = csvText.split('\n');
+    const rows = csvText.split(/\r?\n/);
 
-    let foundUser = null;
+    for (const row of rows) {
+      if (!row.trim()) continue;
 
-    for (let i = 0; i < rows.length; i++) {
-      const cols = rows[i].split(',');
-      if (cols.length >= 2) {
-        const csvUser = cols[0].trim();
-        const csvPass = cols[1].trim();
+      const cols = row.split(',');
+      if (cols.length < 2) continue;
 
-        if (
-          csvUser.toLowerCase() === String(username).trim().toLowerCase() &&
-          csvPass === String(password).trim()
-        ) {
-          foundUser = csvUser;
-          break;
-        }
+      const csvUser = (cols[0] || '').trim();
+      const csvPass = (cols[1] || '').trim();
+
+      if (csvUser.toLowerCase() === String(username).trim().toLowerCase() && csvPass === String(password).trim()) {
+        return res.status(200).json({ success: true, nombre: csvUser });
       }
     }
 
-    if (!foundUser) {
-      return res.status(401).json({ ok: false });
-    }
-
-    return res.status(200).json({
-      ok: true,
-      displayName: foundUser,
-      userKey: foundUser.toLowerCase()
-    });
+    return res.status(401).json({ success: false, message: 'Usuario o contraseña incorrectos. Verifica tu información.' });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    console.error('Error en /api/login:', error);
+    return res.status(500).json({ success: false, message: 'Error al conectar con la base de datos. Intenta de nuevo.' });
   }
-}
+};
