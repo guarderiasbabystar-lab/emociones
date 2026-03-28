@@ -1094,93 +1094,77 @@
     </div>
 
     <script>
-        // ==========================================
-        // LÓGICA DE LOGIN
-        // ==========================================
-        let usuarioActual = ""; // Variable global para guardar el ID
-        let nombreEducadora = ""; // Variable global para el certificado
+    // ==========================================
+    // LÓGICA DE LOGIN
+    // ==========================================
+    let usuarioActual = "";
+    let nombreEducadora = "";
 
-        async function iniciarSesion(e) {
-            e.preventDefault();
-            const userInput = document.getElementById('userNameInput').value.trim();
-            const passInput = document.getElementById('passwordInput').value.trim();
-            const btn = document.getElementById('loginBtn');
-            const errorMsg = document.getElementById('loginError');
+    async function iniciarSesion(e) {
+        e.preventDefault();
 
-            // Estado de carga
-            btn.innerHTML = '<span class="loader"></span> Verificando...';
-            btn.disabled = true;
-            errorMsg.classList.add('hidden');
+        const userInput = document.getElementById('userNameInput').value.trim();
+        const passInput = document.getElementById('passwordInput').value.trim();
+        const btn = document.getElementById('loginBtn');
+        const errorMsg = document.getElementById('loginError');
 
-            try {
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: userInput, password: passInput })
-                });
+        btn.innerHTML = '<span class="loader"></span> Verificando...';
+        btn.disabled = true;
+        errorMsg.classList.add('hidden');
 
-                const data = await response.json().catch(() => ({}));
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: userInput, password: passInput })
+            });
 
-                if (!response.ok) {
-                    throw new Error(data.message || 'No se pudo validar el acceso.');
-                }
+            const data = await response.json().catch(() => ({}));
 
-                if (data.success) {
-                    nombreEducadora = data.nombre || userInput;
-                    usuarioActual = userInput.toLowerCase();
-                    document.getElementById('nombreEducadoraDisplay').textContent = nombreEducadora;
-                    verificarCertificadoGuardado();
-                    mostrarCurso();
-                } else {
-                    mostrarError(btn, errorMsg, data.message || "Usuario o contraseña incorrectos. Verifica tu información.");
-                }
-
-            } catch (error) {
-                console.error("Error validando acceso:", error);
-                mostrarError(btn, errorMsg, error.message || "Error al conectar con la base de datos. Intenta de nuevo.");
+            if (!response.ok) {
+                throw new Error(data.message || 'No se pudo validar el acceso.');
             }
-        }
 
-                if (encontrado) { 
-                    document.getElementById('nombreEducadoraDisplay').textContent = nombreEducadora;
-                    verificarCertificadoGuardado();
-                    mostrarCurso();
-                } else {
-                    mostrarError(btn, errorMsg, "Usuario o contraseña incorrectos. Verifica tu información.");
-                }
-
-            } catch (error) {
-                console.error("Error conectando al sheet:", error);
-                // En caso de que haya problemas con la conexión (CORS, red), mostramos el error
-                mostrarError(btn, errorMsg, "Error al conectar con la base de datos. Intenta de nuevo.");
+            if (data.success) {
+                nombreEducadora = data.nombre || userInput;
+                usuarioActual = userInput.toLowerCase();
+                document.getElementById('nombreEducadoraDisplay').textContent = nombreEducadora;
+                verificarCertificadoGuardado();
+                mostrarCurso();
+            } else {
+                mostrarError(btn, errorMsg, data.message || 'Usuario o contraseña incorrectos. Verifica tu información.');
             }
+        } catch (error) {
+            console.error('Error validando acceso:', error);
+            mostrarError(btn, errorMsg, error.message || 'Error al conectar con la base de datos. Intenta de nuevo.');
         }
+    }
 
-        function mostrarError(btn, errorElement, mensaje) {
-            btn.innerHTML = 'Entrar al Curso';
-            btn.disabled = false;
-            errorElement.innerText = mensaje;
-            errorElement.classList.remove('hidden');
-        }
+    function mostrarError(btn, errorElement, mensaje) {
+        btn.innerHTML = 'Entrar al Curso';
+        btn.disabled = false;
+        errorElement.innerText = mensaje;
+        errorElement.classList.remove('hidden');
+    }
 
-        function mostrarCurso() {
-            document.getElementById('login-view').classList.add('hidden');
-            document.getElementById('course-view').classList.remove('hidden');
-            cerrarMenuMovil();
-        }
+    function mostrarCurso() {
+        document.getElementById('login-view').classList.add('hidden');
+        document.getElementById('course-view').classList.remove('hidden');
+        cerrarMenuMovil();
+    }
 
-        function cerrarSesion() {
-            document.getElementById('userNameInput').value = '';
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('loginBtn').innerHTML = 'Entrar al Curso';
-            document.getElementById('loginBtn').disabled = false;
-            
-            document.getElementById('course-view').classList.add('hidden');
-            document.getElementById('login-view').classList.remove('hidden');
-            
-            // Regresar a inicio
-            cambiarModulo('intro');
-        }
+    function cerrarSesion() {
+        document.getElementById('userNameInput').value = '';
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('loginBtn').innerHTML = 'Entrar al Curso';
+        document.getElementById('loginBtn').disabled = false;
+
+        document.getElementById('course-view').classList.add('hidden');
+        document.getElementById('login-view').classList.remove('hidden');
+
+        cambiarModulo('intro');
+    }
+</script>
 
         // ==========================================
         // LÓGICA DE NAVEGACIÓN DEL CURSO
