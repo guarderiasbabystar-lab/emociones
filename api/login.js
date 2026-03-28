@@ -31,7 +31,10 @@ export default async function handler(req, res) {
         const csvUser = cols[0].trim();
         const csvPass = cols[1].trim();
 
-        if (csvUser.toLowerCase() === String(username).trim().toLowerCase() && csvPass === String(password).trim()) {
+        if (
+          csvUser.toLowerCase() === String(username).trim().toLowerCase() &&
+          csvPass === String(password).trim()
+        ) {
           foundUser = csvUser;
           break;
         }
