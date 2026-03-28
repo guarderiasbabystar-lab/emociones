@@ -50,8 +50,8 @@
         }
     </style>
 </head>
-<body class="text-gray-800 antialiased h-screen flex flex-col overflow-hidden">
-
+<body class="text-gray-800 antialiased min-h-screen flex flex-col overflow-x-hidden">
+    
     <!-- ================= PANTALLA DE LOGIN (CONEXIÓN A SHEET) ================= -->
     <div id="login-view" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-orange-100 to-yellow-50 fade-in">
         <div class="bg-white p-8 md:p-10 rounded-3xl shadow-xl w-11/12 max-w-md text-center border border-orange-100">
@@ -97,8 +97,8 @@
     </div>
 
     <!-- ================= PANTALLA PRINCIPAL DEL CURSO ================= -->
-    <div id="course-view" class="hidden h-full flex flex-col sm:flex-row w-full fade-in">
-        
+<div id="course-view" class="hidden min-h-screen flex flex-col sm:flex-row w-full fade-in">
+    
         <!-- Sidebar / Menú de Navegación -->
         <aside class="w-full sm:w-64 lg:w-72 bg-white border-r border-gray-200 h-auto sm:h-full flex flex-col shadow-sm z-10 flex-shrink-0">
             <div class="p-6 border-b border-gray-100 bg-orange-50 flex items-center justify-between sm:block">
@@ -166,8 +166,8 @@
         </aside>
 
         <!-- Área de Contenido -->
-        <main class="flex-1 h-full overflow-y-auto bg-[#fdf8f5] p-6 sm:p-10 relative">
-            
+<main class="flex-1 overflow-y-auto bg-[#fdf8f5] p-4 sm:p-8 relative">
+    
             <div class="max-w-4xl mx-auto pb-20">
                 
                 <!-- MÓDULO: INTRODUCCIÓN -->
@@ -1057,7 +1057,6 @@
         // ==========================================
         // CONFIGURACIÓN DE ACCESO (GOOGLE SHEETS CSV)
         // ==========================================
-        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXuj_TV8hxPPNyINov2pnYZekErSco7g66nGqy3V7XDipsKZN3zxRGIhM-bdOgq1hD89qiSopbB_Q4/pub?output=csv";
         
         // ==========================================
         // LÓGICA DE LOGIN
@@ -1078,15 +1077,17 @@
             errorMsg.classList.add('hidden');
 
             try {
-                // Obtenemos el CSV publicado desde Google Sheets
-<script>
+           <script>
+let usuarioActual = "";
+let nombreEducadora = "";
+
 async function iniciarSesion(e) {
     e.preventDefault();
     const userInput = document.getElementById('userNameInput').value.trim();
     const passInput = document.getElementById('passwordInput').value.trim();
     const btn = document.getElementById('loginBtn');
     const errorMsg = document.getElementById('loginError');
-    
+
     btn.innerHTML = '<span class="loader"></span> Verificando...';
     btn.disabled = true;
     errorMsg.classList.add('hidden');
@@ -1103,26 +1104,22 @@ async function iniciarSesion(e) {
 
         const data = await response.json();
 
-        if (!response.ok) {
-            throw new Error(data.error || 'Error de autenticación');
-        }
-
-        if (data.ok) {
+        if (response.ok && data.ok) {
             nombreEducadora = data.displayName;
             usuarioActual = data.userKey;
             document.getElementById('nombreEducadoraDisplay').textContent = nombreEducadora;
             verificarCertificadoGuardado();
             mostrarCurso();
-        } else {
-            mostrarError(btn, errorMsg, "Usuario o contraseña incorrectos. Verifica tu información.");
+            return;
         }
 
+        mostrarError(btn, errorMsg, "Usuario o contraseña incorrectos. Verifica tu información.");
     } catch (error) {
         console.error("Error de login:", error);
         mostrarError(btn, errorMsg, "Error al conectar con la base de datos. Intenta de nuevo.");
     }
 }
-</script>                if (!response.ok) throw new Error("No se pudo cargar la lista de acceso.");
+</script>              if (!response.ok) throw new Error("No se pudo cargar la lista de acceso.");
                 const csvText = await response.text();
 
                 // Separar el texto en filas
