@@ -275,7 +275,7 @@ No incluyas introducciones genéricas. Devuelve la respuesta directamente en est
             titulo: 'Noviembre: Gestionando la Rabia',
             foco: 'Comprender que el enojo es natural, pero golpear no lo es. Introducir o reforzar el Rincón de la Calma como herramienta.',
             actividad: '"Bailar la rabia". Sesión de movimiento intenso con papel periódico para rasgar y liberar tensión motriz de forma segura.',
-            libro: '"Vaya Rabieta" de Mireille d\'Allancé.'
+            libro: '"Vaya Rabieta" de Mireille d\\'Allancé.'
         },
         'diciembre': {
             titulo: 'Diciembre: Alegría y Gratitud',
@@ -352,8 +352,10 @@ No incluyas introducciones genéricas. Devuelve la respuesta directamente en est
         const currentMonthIndex = new Date().getMonth();
         const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
         const select = document.getElementById('filtroMes');
-        select.value = meses[currentMonthIndex];
-        mostrarPlanificacionMes();
+        if (select) {
+            select.value = meses[currentMonthIndex];
+            mostrarPlanificacionMes();
+        }
     });
 
     // ==========================================
