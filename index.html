@@ -1304,6 +1304,7 @@ function verificarCertificadoGuardado() {
                 menu.classList.remove('mobile-open');
             }
         }
+        
 
         // Menú Móvil Toggle
         document.getElementById('mobileMenuBtn').addEventListener('click', () => {
@@ -1312,6 +1313,23 @@ function verificarCertificadoGuardado() {
             menu.classList.toggle('mobile-open');
         });
 
+        document.addEventListener('click', (e) => {
+    const menu = document.getElementById('navMenu');
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const aside = document.querySelector('aside');
+
+    if (window.innerWidth >= 640) return;
+    if (menu.classList.contains('hidden')) return;
+
+    const clickedInsideMenu = menu.contains(e.target);
+    const clickedMenuButton = menuBtn.contains(e.target);
+    const clickedInsideAside = aside.contains(e.target);
+
+    if (!clickedInsideMenu && !clickedMenuButton && !clickedInsideAside) {
+        cerrarMenuMovil();
+    }
+});
+        
         window.addEventListener('resize', () => {
             const menu = document.getElementById('navMenu');
             if (window.innerWidth >= 640) {
