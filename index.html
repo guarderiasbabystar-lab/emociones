@@ -1263,11 +1263,8 @@ function verificarCertificadoGuardado() {
                 generarPreguntasExamen();
             }
 
-            // Cerrar menú móvil si está abierto
-            const navMenu = document.getElementById('navMenu');
-            if (window.innerWidth < 640 && !navMenu.classList.contains('hidden')) {
-                navMenu.classList.add('hidden');
-            }
+// Cerrar menú móvil si está abierto
+cerrarMenuMovil();
 
             // Scroll al inicio
             document.querySelector('main').scrollTop = 0;
